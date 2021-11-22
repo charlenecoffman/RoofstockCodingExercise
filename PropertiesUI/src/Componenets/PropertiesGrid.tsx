@@ -17,7 +17,7 @@ const PropertiesGrid: React.FC = observer(() => {
   };
 
   return (
-    <Grid container>
+    <Grid container justifyContent="center" alignItems="center">
       <Grid item xs={10}>
         <TableContainer component={Paper}>
           <Table aria-label="simple table">
