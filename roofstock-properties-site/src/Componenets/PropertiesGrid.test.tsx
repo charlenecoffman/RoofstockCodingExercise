@@ -1,67 +1,33 @@
-// import { TableContainer, Paper, Table, TableBody, Grid } from "@mui/material";
-// import React from "react";
-// import PropertiesGridHeader from "./PropertiesGridHeader";
-// import StoreContext from "../Contexts/StoreContext";
-// import { observer } from "mobx-react-lite";
-// import PropertyGridRow from "./PropertyGridRow";
-// import { PropertyResponse } from "../Client/PropertyClient";
-// import ServiceContext from "../Contexts/ServicesContext";
-
-// const PropertiesGrid: React.FC = observer(() => {
-//   const store = React.useContext(StoreContext);
-//   const service = React.useContext(ServiceContext);
-//   const handleClick = (property: PropertyResponse) => {
-//     service?.property(property);
-//     property.isSaved = true;
-//     store.updateProperty(property);
-//   };
-
-//   return (
-//     <Grid container justifyContent="center" alignItems="center">
-//       <Grid item xs={10}>
-//         <TableContainer component={Paper}>
-//           <Table aria-label="simple table">
-//             <PropertiesGridHeader />
-//             <TableBody>
-//               {store.properties.map((property) => (
-//                 <PropertyGridRow property={property} handleSaveClicked={handleClick} />
-//               ))}
-//             </TableBody>
-//           </Table>
-//         </TableContainer>
-//       </Grid>
-//     </Grid>
-//   );
-// });
-
-// export default PropertiesGrid;
-
-//import React from "react";
-import { Button } from "@mui/material";
-import { mount } from "enzyme";
-import { PropertyResponse } from "../Client/PropertyClient";
 import StoreContext from "../Contexts/StoreContext";
-import { IPropertyStore } from "../Stores/PropertyStore";
 import PropertiesGrid from "./PropertiesGrid";
+import Enzyme, { mount } from "enzyme";
+import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
+import ServiceContext from "../Contexts/ServicesContext";
+import { IClient, PropertyResponse } from "../Client/PropertyClient";
+import { Any } from "../TestHelpers/Any";
 
-describe("UserDetails", () => {
-  let tree;
+Enzyme.configure({ adapter: new Adapter() });
+
+test("CheckboxWithLabel changes the text after click", () => {
   const store = {
-    updateProperty: jest.fn(),
     insertPropertiesCollection: jest.fn(),
-    properties: PropertyResponse[],
-  } as IPropertyStore;
+    updateProperty: jest.fn(),
+    properties: [],
+  };
 
-  beforeAll(() => {
-    tree = mount(
+  const service = {
+    property: jest.fn(),
+    propertyAll: jest.fn(),
+  };
+
+  const grid = mount(
+    <ServiceContext.Provider value={service}>
       <StoreContext.Provider value={store}>
         <PropertiesGrid />
-      </StoreContext.Provider>,
-    );
-  });
+      </StoreContext.Provider>
+    </ServiceContext.Provider>,
+  );
 
-  it("should call service and store when function is triggered", () => {
-    tree.find("saveButton").last().simulate("click");
-    expect(store.updateProperty).toHaveBeenCalled();
-  });
+  grid.find("Button").last().simulate("click");
+  expect(store.updateProperty).toHaveBeenCalled();
 });
