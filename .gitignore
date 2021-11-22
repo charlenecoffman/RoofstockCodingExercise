@@ -12,4 +12,5 @@ PropertiesApi_And_Database/PropertiesAPI.Tests/bin
 PropertiesApi_And_Database/PropertiesAPI_Roofstock/obj
 PropertiesApi_And_Database/PropertiesAPI_Roofstock/bin
 PropertiesApi_And_Database/.vs
-roofstock-properties-site/node_modules
+roofstock-properties-ui/node_modules
+deleteThis
