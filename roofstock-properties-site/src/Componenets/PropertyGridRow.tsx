@@ -30,6 +30,7 @@ const PropertiesGridRow: React.FC<IPropertiesGridRowProps> = (props) => {
         {isSaved && <CheckIcon />}
         {!isSaved && (
           <Button
+            name="saveButton"
             variant="contained"
             onClick={() => {
               props.handleSaveClicked(props.property);
