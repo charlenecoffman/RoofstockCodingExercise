@@ -24,7 +24,7 @@ const PropertiesGrid: React.FC = observer(() => {
             <PropertiesGridHeader />
             <TableBody>
               {store.properties.map((property) => (
-                <PropertyGridRow property={property} handleSaveClicked={handleClick} />
+                <PropertyGridRow key={property.propertyId} property={property} handleSaveClicked={handleClick} />
               ))}
             </TableBody>
           </Table>

@@ -44,7 +44,7 @@ namespace PropertiesAPI.Tests
 
             var properties = _controller.GetAllProperties();
             
-            Assert.AreEqual(1, properties.Result.Value.Count(p => p.PropertyId == 1));
+            Assert.AreEqual(1, properties.Count(p => p.PropertyId == 1));
         }
 
          [TestMethod]
@@ -62,7 +62,7 @@ namespace PropertiesAPI.Tests
 
             _apiCollection.Add(newProperty2);
 
-            var properties = _controller.GetAllProperties().Result.Value;
+            var properties = _controller.GetAllProperties();
             Assert.AreEqual(2000, properties.FirstOrDefault(p => p.PropertyId == 1).YearBuilt);
         }
     }

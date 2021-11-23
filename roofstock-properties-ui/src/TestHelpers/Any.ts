@@ -1,4 +1,5 @@
 import moment from "moment";
+import { Address, PropertyResponse } from "../Client/PropertyClient";
 
 export const flushPromises = () => {
   new Promise((resolve) => setImmediate(resolve));
@@ -23,6 +24,10 @@ export class Any {
     return Math.floor(Math.random() * (max - min) + 1);
   }
 
+  public readonly RandomIntWithPercision = (precision = 100) => {
+    return Math.floor(Math.random() * (10 * precision - 1 * precision) + 1 * precision) / (1 * precision);
+  };
+
   public readonly RandomString = (length = 10) => this.RandomFrom("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", length);
 
   readonly RandomFrom = (characters: string, length: number) =>
@@ -44,6 +49,24 @@ export class Any {
   }
 
   readonly RandomDate = (minYear: number, maxYear: number) => moment([this.RandomInt(minYear, maxYear)]).toDate();
+
+  public RandomAddress = () =>
+    new Address({
+      address1: this.RandomString(),
+      address2: this.RandomString(),
+      city: this.RandomString(),
+      state: this.RandomString(),
+    });
+  public RandomPropertyResponse = () =>
+    new PropertyResponse({
+      address: this.RandomAddress(),
+      propertyId: this.RandomInt(),
+      yearBuilt: this.RandomInt(),
+      listPrice: this.RandomIntWithPercision(100),
+      grossYield: this.RandomIntWithPercision(100),
+      monthlyRent: this.RandomIntWithPercision(100),
+      isSaved: this.RandomBoolean(),
+    });
 }
 
 const AnyLibrary = new Any();
