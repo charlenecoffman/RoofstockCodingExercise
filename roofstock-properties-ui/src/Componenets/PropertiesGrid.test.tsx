@@ -1,42 +1,81 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import PropertiesGrid from "./PropertiesGrid";
 import { IPropertyStore } from "../Stores/PropertyStore";
-import { Address, IClient, PropertyResponse } from "../Client/PropertyClient";
+import { IClient, PropertyResponse } from "../Client/PropertyClient";
 import StoreContext from "../Contexts/StoreContext";
 import ServiceContext from "../Contexts/ServicesContext";
 import Any from "../TestHelpers/Any";
-import { TableRow } from "@mui/material";
 
 let service: IClient;
 let store: IPropertyStore;
 test("Shows button when not in DB", () => {
-  store = {
-    properties: [] as PropertyResponse[],
-    updateProperty: jest.fn(),
-    insertPropertiesCollection: jest.fn(),
-  };
-  service = {
-    propertyAll: jest.fn(),
-    property: jest.fn(),
-  };
+  store = getStore();
+  service = getService();
+
   var property = Any.RandomPropertyResponse();
   property.isSaved = false;
   store.properties.push(property);
 
-  const result = render(
+  callRender();
+
+  const theButton = screen.getByRole("button");
+  expect(theButton).toBeInTheDocument();
+  fireEvent.click(theButton);
+  expect(service.property).toHaveBeenCalled();
+  expect(store.updateProperty).toHaveBeenCalled();
+});
+
+test("Shows no button when in DB", () => {
+  store = getStore();
+  service = getService();
+
+  var property = Any.RandomPropertyResponse();
+  property.isSaved = true;
+  store.properties.push(property);
+
+  callRender();
+
+  const button = screen.queryByRole("button");
+  expect(button).toBeFalsy();
+});
+
+test("Calls service and store on update", () => {
+  store = getStore();
+  service = getService();
+
+  var property = Any.RandomPropertyResponse();
+  property.isSaved = false;
+  store.properties.push(property);
+
+  callRender();
+
+  const theButton = screen.getByRole("button");
+  fireEvent.click(theButton);
+  expect(service.property).toHaveBeenCalled();
+  expect(store.updateProperty).toHaveBeenCalled();
+});
+
+function getStore() {
+  return {
+    properties: [] as PropertyResponse[],
+    updateProperty: jest.fn(),
+    insertPropertiesCollection: jest.fn(),
+  };
+}
+
+function getService() {
+  return {
+    propertyAll: jest.fn(),
+    property: jest.fn(),
+  };
+}
+
+function callRender() {
+  render(
     <ServiceContext.Provider value={service}>
       <StoreContext.Provider value={store}>
         <PropertiesGrid />
       </StoreContext.Provider>
     </ServiceContext.Provider>,
   );
-
-  const table = result.container.querySelector("TableBody");
-  console.log(table);
-  const tableRow = table?.querySelector("TableRow");
-  console.log(tableRow);
-  const theButton = tableRow?.querySelector("button")!;
-  console.log(theButton);
-  fireEvent.click(theButton);
-  expect(service.property).toHaveBeenCalled();
-});
+}

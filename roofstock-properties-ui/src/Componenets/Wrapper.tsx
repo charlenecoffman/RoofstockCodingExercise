@@ -6,11 +6,11 @@ import ServiceContext from "../Contexts/ServicesContext";
 import StoreContext from "../Contexts/StoreContext";
 
 const Wrapper: React.FC = () => {
-  const services = useContext(ServiceContext);
+  const service = useContext(ServiceContext);
   const store = useContext(StoreContext);
 
   const getProperties = async () => {
-    const properties = await services?.propertyAll();
+    const properties = await service?.propertyAll();
     store?.insertPropertiesCollection(properties ?? ([] as PropertyResponse[]));
   };
 
@@ -19,7 +19,7 @@ const Wrapper: React.FC = () => {
   }, []);
 
   return (
-    <ServiceContext.Provider value={services}>
+    <ServiceContext.Provider value={service}>
       <StoreContext.Provider value={store}>
         <App />
       </StoreContext.Provider>
