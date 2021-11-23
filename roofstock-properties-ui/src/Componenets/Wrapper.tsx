@@ -2,7 +2,7 @@
 import React, { useContext } from "react";
 import App from "../App";
 import { PropertyResponse } from "../Client/PropertyClient";
-import ServiceContext from "../Contexts/ServicesContext";
+import ServiceContext from "../Contexts/ServiceContext";
 import StoreContext from "../Contexts/StoreContext";
 
 const Wrapper: React.FC = () => {

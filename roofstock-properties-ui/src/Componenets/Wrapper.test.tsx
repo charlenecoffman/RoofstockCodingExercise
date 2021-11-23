@@ -3,7 +3,7 @@ import Wrapper from "./Wrapper";
 import { IPropertyStore } from "../Stores/PropertyStore";
 import { IClient, PropertyResponse } from "../Client/PropertyClient";
 import StoreContext from "../Contexts/StoreContext";
-import ServiceContext from "../Contexts/ServicesContext";
+import ServiceContext from "../Contexts/ServiceContext";
 import Any from "../TestHelpers/Any";
 
 let service: IClient;

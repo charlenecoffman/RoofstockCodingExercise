@@ -5,7 +5,7 @@ import StoreContext from "../Contexts/StoreContext";
 import { observer } from "mobx-react-lite";
 import PropertyGridRow from "./PropertyGridRow";
 import { PropertyResponse } from "../Client/PropertyClient";
-import ServiceContext from "../Contexts/ServicesContext";
+import ServiceContext from "../Contexts/ServiceContext";
 
 const PropertiesGrid: React.FC = observer(() => {
   const store = React.useContext(StoreContext);
